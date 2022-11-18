@@ -1,12 +1,10 @@
 ﻿using WebApplication2.Domain.Common;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplication2.Domain
+namespace WebApplication2.DTOs
 {
-    public class Usuario : BaseDomainModel
+    public class UsuarioDTO
     {
         public string Identificacion { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string UsuarioName { get; set; }
 
@@ -19,8 +17,8 @@ namespace WebApplication2.Domain
 
         public int DepartamentoId { get; set; }
         public int CargoId { get; set; }
-        public virtual Departamento Departamento { get; set; }
-        public virtual Cargo Cargo { get; set; }
+        public bool Estado { get; set; }
+
 
     }
 }

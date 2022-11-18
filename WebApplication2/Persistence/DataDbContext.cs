@@ -1,10 +1,7 @@
 ﻿
-
-
 using Microsoft.EntityFrameworkCore;
-using WebApplication2.Domain;
 using WebApplication2.Domain.Common;
-
+using WebApplication2.Domain;
 
 namespace WebApplication2.Persistence
 {
@@ -14,11 +11,14 @@ namespace WebApplication2.Persistence
         {
         }
 
+        public DataDbContext()
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.
-                 UseSqlServer(@"Data Source=DESKTOP-L94Q7CS\MSSQLSERVER2019;Initial Catalog=TYT_PRUEBA;Integrated Security=True User Id=sa;Password=12345;")
+            optionsBuilder
+                .UseSqlServer(@"Data Source=DESKTOP-L94Q7CS\MSSQLSERVER2019;Initial Catalog=TYT_PRUEBA;Persist Security Info=False;User ID=sa; Password=12345;")
                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, Microsoft.Extensions.Logging.LogLevel.Information)
                .EnableSensitiveDataLogging();
         }
@@ -44,24 +44,24 @@ namespace WebApplication2.Persistence
             return base.SaveChangesAsync(cancellationToken);
         }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Departamento>()
             .HasData(
-                 new Departamento { CreatedBy = "System", Id=1, Codigo = "123", Nombre = "Sistema", Estado = true },
-                new Departamento { CreatedBy = "System", Id = 2, Codigo = "124", Nombre = "Talento Humano", Estado = true });
+                 new Departamento { CreatedBy = "System", DepartamentoId= 1, Codigo = "123", Nombre = "Sistema", Estado = true, CreatedDate = DateTime.Now },
+                new Departamento { CreatedBy = "System", DepartamentoId = 2, Codigo = "124", Nombre = "Talento Humano", Estado = true, CreatedDate = DateTime.Now });
             modelBuilder.Entity<Cargo>()
             .HasData(
-                 new Cargo { CreatedBy = "System", Id = 1, Codigo = "991", Nombre = "Desarrollador", Estado = true },
-                new Cargo { CreatedBy = "System", Id = 2, Codigo = "992", Nombre = "Lider de Proyecto", Estado = true });
+                 new Cargo { CreatedBy = "System", CargoId= 1, Codigo = "991", Nombre = "Desarrollador", Estado = true , CreatedDate = DateTime.Now },
+                new Cargo { CreatedBy = "System", CargoId = 2, Codigo = "992", Nombre = "Lider de Proyecto", Estado = true, CreatedDate = DateTime.Now });
         }
 
 
+        public DbSet<Departamento>? Departamento { get; set; }
 
         public DbSet<Cargo>? Cargo { get; set; }
-
-        public DbSet<Departamento>? Departamento { get; set; }
         public DbSet<Usuario>? Usuario { get; set; }
 
 

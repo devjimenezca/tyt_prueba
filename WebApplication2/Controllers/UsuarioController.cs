@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using WebApplication2.Domain;
+using WebApplication2.Domain.Common;
+using WebApplication2.DTOs;
 using WebApplication2.Repository;
 
 namespace WebApplication2.Controllers
@@ -11,29 +12,81 @@ namespace WebApplication2.Controllers
     {
 
         [HttpGet(Name = "GetUsuario")]
-        public async Task<List<Usuario>> Get()
+        public async Task<ResponseModel> Get()
         {
-            UsuarioRepository _UsuarioRepository = new UsuarioRepository();
-            return await _UsuarioRepository.GetClienteAll();
+            ResponseModel response = new ResponseModel();
+            try
+            {
+          
+                UsuarioRepository _UsuarioRepository = new UsuarioRepository();
+                response.CodError = 0;
+                response.Respuesta.Add( await _UsuarioRepository.GetClienteAll());
+               
+            }
+            catch (Exception ex)
+            {
+                response.CodError = 999;
+                response.Mensaje = ex.Message;
+            }
+            return response;
+
         }
         [HttpPost(Name = "SaveUsuario")]
-        public async Task<Usuario> Post(Usuario usuario)
+        public async Task<ResponseModel> Post(UsuarioDTO usuario)
         {
-            UsuarioRepository _UsuarioRepository = new UsuarioRepository();
-            return await _UsuarioRepository.SaveUsuario(usuario);
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                UsuarioRepository _UsuarioRepository = new UsuarioRepository();
+                response.CodError = 0;
+                var resultado =  _UsuarioRepository.SaveUsuario(usuario);
+                response.Respuesta.Add(resultado);
+            }
+            catch (Exception ex)
+            {
+                response.CodError = 999;
+                response.Mensaje = ex.Message;
+            }
+            return response;
+
         }
         [HttpPut(Name = "UpdateUsuario")]
-        public async Task<Usuario> Put(Usuario usuario)
+        public async Task<ResponseModel> Put(UsuarioDTO usuario)
         {
-            UsuarioRepository _UsuarioRepository = new UsuarioRepository();
-            return await _UsuarioRepository.UpdateUsuario(usuario);
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                UsuarioRepository _UsuarioRepository = new UsuarioRepository();
+                response.CodError = 0;
+                var resultado = _UsuarioRepository.UpdateUsuario(usuario);
+                response.Respuesta.Add(resultado);
+            }
+            catch (Exception ex)
+            {
+                response.CodError = 999;
+                response.Mensaje = ex.Message;
+            }
+            return response;
         }
 
         [HttpDelete(Name = "DeleteUsuario")]
-        public async Task<Boolean> Put(int Id)
+        public async Task<ResponseModel> Delete(int Id)
         {
-            UsuarioRepository _UsuarioRepository = new UsuarioRepository();
-            return await _UsuarioRepository.DeleteUsuario(Id);
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                UsuarioRepository _UsuarioRepository = new UsuarioRepository();
+                response.CodError = 0;
+                var resultado = await _UsuarioRepository.DeleteUsuario(Id);
+                response.Respuesta.Add(resultado);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.CodError = 999;
+                response.Mensaje = ex.Message;
+            }
+            return response;
         }
     }
 }

@@ -8,10 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataDbContext>(options => options.
- UseSqlServer(@"Data Source=DESKTOP-L94Q7CS\MSSQLSERVER2019;Initial Catalog=TYT_PRUEBA;Integrated Security=True User Id=sa;Password=12345;")
+
+builder.Services.AddDbContext<DataDbContext>(options => options
+ .UseSqlServer(@"Data Source=DESKTOP-L94Q7CS\MSSQLSERVER2019;Initial Catalog=TYT_PRUEBA;Persist Security Info=False;User ID=sa; Password=12345;")
 );
+
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
